@@ -1,4 +1,4 @@
-import sys
+import sys , traceback
 
 import pygtk
 pygtk.require('2.0')
@@ -92,8 +92,13 @@ class GLDrawingArea(gtk.DrawingArea, gtk.gtkgl.Widget):
 		try :
 			for p in self.todraw :
 				p.draw()
-		except OpenGL.error.Error as e :
-			print 'OpenGL error: ' + str(e)
+		except Exception as e :
+			t , v , tb = sys.exc_info()
+			print
+			print 'Traceback:'
+			traceback.print_tb( tb )
+			print
+			print '%s: %s' % (type(e).__name__ , str(e))
 			sys.exit(0)
 
 		if gldrawable.is_double_buffered():
