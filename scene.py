@@ -17,6 +17,7 @@ else:
     timer = time.time
 
 from camera import Camera
+from mesh import Mesh
 
 class Scene :
 	def __init__( self , fovy , ratio , near , far ) :
@@ -26,6 +27,7 @@ class Scene :
 		self.ratio = ratio
 
 		self.camera = None
+		self.mesh = Mesh('plane.mesh')
 
 		self.x = 0.0
 
@@ -42,7 +44,7 @@ class Scene :
 
 		glEnable( GL_DEPTH_TEST )
 		glEnable( GL_NORMALIZE )
-		glEnable( GL_CULL_FACE )
+#        glEnable( GL_CULL_FACE )
 		glEnable( GL_COLOR_MATERIAL )
 		glColorMaterial( GL_FRONT , GL_AMBIENT_AND_DIFFUSE )
 
@@ -72,14 +74,7 @@ class Scene :
 		pass
 
 	def _draw_scene( self ) :
-		glColor3f(.3,1,0)
-		glTranslatef(-.5,-.5,0)
-		glBegin(GL_QUADS)
-		glVertex3f(0.0,0.0,0.0)
-		glVertex3f(1.0,0.0,0.0)
-		glVertex3f(1.0,1.0,0.0)
-		glVertex3f(0.0,1.0,0.0)
-		glEnd()
+		self.mesh.draw()
 
 	def _update_proj( self ) :
 		glMatrixMode(GL_PROJECTION)
