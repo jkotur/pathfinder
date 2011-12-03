@@ -50,13 +50,14 @@ class App(object):
 		win_main.connect('key-release-event', self._on_key_released )
 
 		self.scene = Scene( self.fov , .01 , self.near , self.far )
-		self.drawing_area.add( self.scene )
+		self.drawing_area.add( self.scene , ( 0,0,.5,1) )
+		self.drawing_area.add( self.scene , (.5,0,.5,1) )
 
 		print 'Scene added'
 
 		win_main.show_all()
 
-		width = self.drawing_area.allocation.width
+		width = self.drawing_area.allocation.width / 2.0
 		height = self.drawing_area.allocation.height
 		ratio = float(width)/float(height)
 
@@ -84,7 +85,7 @@ class App(object):
 		pass
 
 	def _on_reshape( self , widget , data=None ) :
-		width = self.drawing_area.allocation.width
+		width = self.drawing_area.allocation.width / 2.0
 		height = self.drawing_area.allocation.height
 
 		ratio = float(width)/float(height)

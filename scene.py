@@ -49,6 +49,8 @@ class Scene :
 		glColorMaterial( GL_FRONT , GL_AMBIENT_AND_DIFFUSE )
 
 	def draw( self ) :
+		self._update_proj()
+
 		self.time = timer()
 
 		dt = self.time - self.last_time
