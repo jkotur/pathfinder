@@ -1,4 +1,4 @@
 
 run: 
-	python empty.py 
+	python pathfinder.py
 

@@ -12,7 +12,7 @@ from glwidget import GLDrawingArea
 
 from scene import Scene
 
-ui_file = "empty.ui"
+ui_file = "pathfinder.ui"
 
 class App(object):
 	"""Application main class"""
@@ -50,8 +50,8 @@ class App(object):
 		win_main.connect('key-release-event', self._on_key_released )
 
 		self.scene = Scene( self.fov , .01 , self.near , self.far )
-		self.drawing_area.add( self.scene , ( 0,0,.5,1) )
-		self.drawing_area.add( self.scene , (.5,0,.5,1) )
+		self.drawing_area.add( self.scene , ( 0,0,1,1) )
+#        self.drawing_area.add( self.scene , (.5,0,.5,1) )
 
 		print 'Scene added'
 
