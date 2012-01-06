@@ -49,7 +49,7 @@ class App(object):
 		win_main.connect('key-press-event'  , self._on_key_pressed  )
 		win_main.connect('key-release-event', self._on_key_released )
 
-		self.scene = Scene( self.fov , .01 , self.near , self.far )
+		self.scene = Scene( )
 		self.drawing_area.add( self.scene , ( 0,0,1,1) )
 #        self.drawing_area.add( self.scene , (.5,0,.5,1) )
 
@@ -57,11 +57,10 @@ class App(object):
 
 		win_main.show_all()
 
-		width = self.drawing_area.allocation.width / 2.0
+		width = self.drawing_area.allocation.width
 		height = self.drawing_area.allocation.height
-		ratio = float(width)/float(height)
 
-		self.scene.set_ratio( ratio )
+		self.scene.set_screen_size( width , height )
 
 		builder.connect_signals(self)
 
@@ -69,6 +68,7 @@ class App(object):
 
 		self.drawing_area.connect('motion_notify_event',self._on_mouse_motion)
 		self.drawing_area.connect('button_press_event',self._on_button_pressed)
+		self.drawing_area.connect('button_release_event',self._on_button_released)
 		self.drawing_area.connect('configure_event',self._on_reshape)
 		self.drawing_area.connect_after('expose_event',self._after_draw)
 
@@ -85,7 +85,7 @@ class App(object):
 		pass
 
 	def _on_reshape( self , widget , data=None ) :
-		width = self.drawing_area.allocation.width / 2.0
+		width = self.drawing_area.allocation.width
 		height = self.drawing_area.allocation.height
 
 		ratio = float(width)/float(height)
@@ -95,17 +95,20 @@ class App(object):
 	def _on_button_pressed( self , widget , data=None ) :
 		if data.button == 3 :
 			self.mouse_pos = data.x , data.y
+		self.scene.mouse_but_pressed( data.button , (data.x,data.y) )
+		self.drawing_area.queue_draw()
+
+	def _on_button_released( self , widget , data=None ) :
+		self.scene.mouse_but_released( data.button , (data.x,data.y) )
 		self.drawing_area.queue_draw()
 
 	def _on_mouse_motion( self , widget , data=None ) :
 		diff = map( op.sub , self.mouse_pos , (data.x , data.y) )
 
-		self.scene.mouse_move( diff )
+		self.scene.mouse_move( diff , (data.x,data.y) )
 
 		self.mouse_pos = data.x , data.y
 		self.drawing_area.queue_draw()
-
-#        gtk.gdk.Keymap
 
 	def _on_key_pressed( self , widget , data=None ) :
 		if not any(self.move) :
