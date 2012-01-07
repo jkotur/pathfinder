@@ -29,6 +29,7 @@ class Scene :
 		self.blocks = []
 		self.new_block = None
 
+		self.anim = False
 
 	def gfx_init( self ) :
 		glClearColor(1,1,1,1)
@@ -51,15 +52,16 @@ class Scene :
 		self.last_time = self.time
 
 	def _step( self , dt ) :
-		pass
+		if self.anim :
+			self.robot.step()
 
 	def _draw_scene( self ) :
 		glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 
-		self.robot.draw()
-
 		for b in self.blocks :
 			b.draw()
+
+		self.robot.draw()
 
 	def _update_proj( self ) :
 		glMatrixMode(GL_PROJECTION)
@@ -96,6 +98,21 @@ class Scene :
 		elif but == 3 :
 			self.new_block = None
 
-	def key_pressed( self , p ) :
+	def key_pressed( self , key ) :
 		pass
+
+	def set_start_point( self ) :
+		self.robot.set_start( self.robot.get_end() )
+
+	def set_finish_point( self ) :
+		self.robot.set_finish( self.robot.get_end() )
+
+	def set_robot_params( self , l1 , l2 ) :
+		self.robot.set_params( l1 , l2 )
+
+	def anim_toggle( self ) :
+		self.anim = not self.anim
+
+	def anim_reset( self ) :
+		self.robot.reset()
 

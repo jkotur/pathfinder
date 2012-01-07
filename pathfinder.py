@@ -37,12 +37,14 @@ class App(object):
 		glconfig = self.init_glext()
 
 		self.drawing_area = GLDrawingArea(glconfig)
-		self.drawing_area.set_events( gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK | gtk.gdk.BUTTON1_MOTION_MASK | gtk.gdk.BUTTON3_MOTION_MASK )
+		self.drawing_area.set_events( gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK | gtk.gdk.MOTION_NOTIFY | gtk.gdk.BUTTON1_MOTION_MASK | gtk.gdk.BUTTON3_MOTION_MASK )
 		self.drawing_area.set_size_request(320,240)
 
 		builder.get_object("vbox1").pack_start(self.drawing_area)
 
 		win_main = builder.get_object("win_main")
+		self.sp_l1 = builder.get_object("sp_l1")
+		self.sp_l2 = builder.get_object("sp_l2")
 
 		win_main.set_events( gtk.gdk.KEY_PRESS_MASK | gtk.gdk.KEY_RELEASE_MASK )
 
@@ -50,6 +52,9 @@ class App(object):
 		win_main.connect('key-release-event', self._on_key_released )
 
 		self.scene = Scene( )
+
+		self.scene.set_robot_params( self.sp_l1.get_value() , self.sp_l2.get_value() )
+
 		self.drawing_area.add( self.scene , ( 0,0,1,1) )
 #        self.drawing_area.add( self.scene , (.5,0,.5,1) )
 
@@ -114,6 +119,8 @@ class App(object):
 		if not any(self.move) :
 			gtk.timeout_add( 20 , self._move_callback )
 
+		self.scene.key_pressed( gtk.gdk.keyval_to_unicode( data.keyval ) )
+
 		for i in range(len(self.dirskeys)) :
 			if (data.keyval,False) in self.dirskeys[i][0] :
 				self.dirskeys[i][0][ self.dirskeys[i][0].index( (data.keyval,False) ) ] = (data.keyval,True)
@@ -133,9 +140,17 @@ class App(object):
 				self.move[i]+= 1
 
 	def _move_callback( self ) :
-		self.scene.key_pressed( self.move )
 		self.drawing_area.queue_draw()
 		return any(self.move)
+
+	def on_start_set( self , widget , data=None ) :
+		self.scene.set_start_point()
+
+	def on_finish_set( self , widget , data=None ) :
+		self.scene.set_finish_point()
+
+	def on_robot_changed( self , widget , data=None ) :
+		self.scene.set_robot_params( self.sp_l1.get_value() , self.sp_l2.get_value() )
 
 	def init_glext(self):
 		# Query the OpenGL extension version.
@@ -166,11 +181,14 @@ class App(object):
 
 		return glconfig
 
-	def on_win_main_destroy(self,widget,data=None):
+	def on_quit(self,widget,data=None):
 		gtk.main_quit()
-		 
-	def on_but_quit_clicked(self,widget,data=None):
-		gtk.main_quit()
+
+	def on_anim_toggle(self,widget,data=None) :
+		self.scene.anim_toggle()
+
+	def on_anim_reset(self,widget,data=None) :
+		self.scene.anim_reset()
 
 if __name__ == '__main__':
 	app = App()
