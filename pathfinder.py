@@ -37,7 +37,7 @@ class App(object):
 		glconfig = self.init_glext()
 
 		self.drawing_area = GLDrawingArea(glconfig)
-		self.drawing_area.set_events( gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK | gtk.gdk.BUTTON3_MOTION_MASK )
+		self.drawing_area.set_events( gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK | gtk.gdk.BUTTON1_MOTION_MASK | gtk.gdk.BUTTON3_MOTION_MASK )
 		self.drawing_area.set_size_request(320,240)
 
 		builder.get_object("vbox1").pack_start(self.drawing_area)
@@ -93,7 +93,7 @@ class App(object):
 		self.scene.set_screen_size( width , height )
 
 	def _on_button_pressed( self , widget , data=None ) :
-		if data.button == 3 :
+		if data.button in (1,3) :
 			self.mouse_pos = data.x , data.y
 		self.scene.mouse_but_pressed( data.button , (data.x,data.y) )
 		self.drawing_area.queue_draw()

@@ -16,14 +16,19 @@ if sys.platform.startswith('win'):
 else:
     timer = time.time
 
+from robot import Robot
 from block import Block
 
 class Scene :
 	def __init__( self ) :
 		self.last_time = timer()
 
+		self.robot = Robot( (400,400) , (300,300) )
+		self.move_robot = False
+
 		self.blocks = []
 		self.new_block = None
+
 
 	def gfx_init( self ) :
 		glClearColor(1,1,1,1)
@@ -51,6 +56,8 @@ class Scene :
 	def _draw_scene( self ) :
 		glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 
+		self.robot.draw()
+
 		for b in self.blocks :
 			b.draw()
 
@@ -70,16 +77,23 @@ class Scene :
 		self.set_ratio( float(w)/float(h) )
 
 	def mouse_move( self , df , p ) :
+		if self.move_robot :
+			self.robot.set_end( p )
 		if self.new_block != None :
 			self.new_block.set_end( p )
 
 	def mouse_but_pressed( self , but , p ) :
-		if but == 3 :
+		if but == 1 :
+			self.robot.set_end( p )
+			self.move_robot = True
+		elif but == 3 :
 			self.new_block = Block( p )
 			self.blocks.append( self.new_block )
 
 	def mouse_but_released( self , but , p ) :
-		if but == 3 :
+		if but == 1 :
+			self.move_robot = False
+		elif but == 3 :
 			self.new_block = None
 
 	def key_pressed( self , p ) :
