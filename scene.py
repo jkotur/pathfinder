@@ -18,6 +18,7 @@ else:
 
 from robot import Robot
 from block import Block
+from finder import PathFinder
 
 class Scene :
 	def __init__( self ) :
@@ -28,6 +29,8 @@ class Scene :
 
 		self.blocks = []
 		self.new_block = None
+
+		self.finder = PathFinder( self.robot , self.blocks )
 
 		self.anim = False
 
@@ -53,7 +56,7 @@ class Scene :
 
 	def _step( self , dt ) :
 		if self.anim :
-			self.robot.step()
+			self.finder.step( dt )
 
 	def _draw_scene( self ) :
 		glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
@@ -114,5 +117,5 @@ class Scene :
 		self.anim = not self.anim
 
 	def anim_reset( self ) :
-		self.robot.reset()
+		self.finder.reset()
 
