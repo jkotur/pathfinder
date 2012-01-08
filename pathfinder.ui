@@ -45,21 +45,20 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="but_quit">
-                <property name="label">gtk-quit</property>
+              <object class="GtkButton" id="button2">
+                <property name="label">gtk-goto-first</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="pressed" handler="on_quit" swapped="no"/>
+                <signal name="pressed" handler="on_anim_reset" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -71,7 +70,7 @@
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="pressed" handler="on_anim_reset" swapped="no"/>
+                <signal name="pressed" handler="on_anim_recalculate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -175,6 +174,24 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">9</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="but_quit">
+                <property name="label">gtk-quit</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <signal name="pressed" handler="on_quit" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">10</property>
               </packing>
             </child>
           </object>

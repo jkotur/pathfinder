@@ -24,6 +24,9 @@ class Robot( Drawable ) :
 	def get_beg( self ) :
 		return self.beg
 
+	def get_mid( self ) :
+		return self.mid
+
 	def get_end( self ) :
 		return self.end
 

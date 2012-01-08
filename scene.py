@@ -98,11 +98,26 @@ class Scene :
 	def mouse_but_released( self , but , p ) :
 		if but == 1 :
 			self.move_robot = False
+		elif but == 2 :
+			for b in self.blocks :
+				if b.contains( p ) :
+					self.blocks.remove( b )
+					break
 		elif but == 3 :
 			self.new_block = None
 
+	def check_intersection( self ) :
+		beg = self.robot.get_beg()
+		mid = self.robot.get_mid()
+		end = self.robot.get_end()
+		print '*** Collisions ***'
+		for b in self.blocks :
+			
+			print "Collide: " , b.intersect( beg , mid ) , b.intersect( mid , end )
+
 	def key_pressed( self , key ) :
-		pass
+		if key == 0 :
+			self.check_intersection()
 
 	def set_start_point( self ) :
 		self.robot.set_start( self.robot.get_end() )
@@ -118,4 +133,7 @@ class Scene :
 
 	def anim_reset( self ) :
 		self.finder.reset()
+
+	def anim_recalc( self ) :
+		self.finder.recalc()
 

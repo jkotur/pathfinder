@@ -34,9 +34,12 @@ class PathFinder :
 
 		self.t += dt
 
-	def reset( self ) :
+	def recalc( self ) :
 		self.gen_state_map()
 		self.find_path()
+		self.t = 0.0
+
+	def reset( self ) :
 		self.t = 0.0
 
 	def gen_state_map( self ) :

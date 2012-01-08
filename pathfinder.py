@@ -187,6 +187,9 @@ class App(object):
 	def on_anim_toggle(self,widget,data=None) :
 		self.scene.anim_toggle()
 
+	def on_anim_recalculate(self,widget,data=None) :
+		self.scene.anim_recalc()
+
 	def on_anim_reset(self,widget,data=None) :
 		self.scene.anim_reset()
 
