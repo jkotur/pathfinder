@@ -37,11 +37,16 @@ class Block( Drawable ) :
 		glEnd()
 
 	def contains( self , p ) :
+		xmin = min(self.beg[0],self.end[0])
+		xmax = max(self.beg[0],self.end[0])
+		ymin = min(self.beg[1],self.end[1])
+		ymax = max(self.beg[1],self.end[1])
+
 		return \
-				p[0] > self.beg[0] and \
-				p[0] < self.end[0] and \
-				p[1] > self.beg[1] and \
-				p[1] < self.end[1]
+				p[0] > xmin and \
+				p[0] < xmax and \
+				p[1] > ymin and \
+				p[1] < ymax
 
 	def intersect( self , p1 , p2 ) :
 		''' check line with rectangle intersection based
@@ -67,10 +72,17 @@ class Block( Drawable ) :
 		if c1 == 0 or c2 == 0 : return True # one outside and one inside
 		# both outside
 
-		yb = (p2[1] - p1[1]) * ( xmin - p1[0] ) / ( p2[0] - p1[0] ) + p1[1]
-		ye = (p2[1] - p1[1]) * ( xmax - p1[0] ) / ( p2[0] - p1[0] ) + p1[1]
+		xb = (p2[0] - p1[0]) * ( ymin - p1[1] ) / ( p2[1] - p1[1] ) + p1[0]
+		if xb < xmax and xb > xmin : return True
 
+		xe = (p2[0] - p1[0]) * ( ymax - p1[1] ) / ( p2[1] - p1[1] ) + p1[0]
+		if xe < xmax and xe > xmin : return True
+
+		yb = (p2[1] - p1[1]) * ( xmin - p1[0] ) / ( p2[0] - p1[0] ) + p1[1]
 		if yb < ymax and yb > ymin : return True
+
+		ye = (p2[1] - p1[1]) * ( xmax - p1[0] ) / ( p2[0] - p1[0] ) + p1[1]
 		if ye < ymax and ye > ymin : return True
+
 		return False
 
