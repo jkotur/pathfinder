@@ -1,5 +1,7 @@
 import sys
 
+from OpenGL.GL import *
+
 import math as m
 import numpy as np
 
@@ -131,4 +133,19 @@ class PathFinder :
 		self.path = path
 
 #        print path
+
+	def draw( self ) :
+		glPointSize(1)
+		glBegin(GL_POINTS)
+		for x in range(self.dim) :
+			for y in range(self.dim) :
+				if self.state_map[x,y] :
+					glColor3f( 1 , 1 , 0 )
+				else :
+					glColor3f( 0 , 0 , 0 )
+				glVertex3f( x , y , 0 )
+		glColor3f( 1, 0 , 0 )
+		for x , y in self.path :
+			glVertex3f( x , y , 0 )
+		glEnd()
 

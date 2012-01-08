@@ -65,6 +65,7 @@ class Scene :
 			b.draw()
 
 		self.robot.draw()
+		self.finder.draw()
 
 	def _update_proj( self ) :
 		glMatrixMode(GL_PROJECTION)
